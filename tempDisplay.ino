@@ -6,8 +6,8 @@
 //      VCC: 5V or 3V
 //      GND: GND
 //      DATA: 2
-int pinDHT11 = 0;
-SimpleDHT11 dht11(pinDHT11);
+int pinDHT22 = 0;
+SimpleDHT22 dht22(pinDHT22);
 // Module connection pins (Digital Pins)
 #define CLK 2
 #define DIO 1
@@ -35,25 +35,27 @@ void loop()
   Serial.println("Sample DHT11...");
   
   // read without samples.
-  byte temperature = 0;
-  byte humidity = 0;
+  float temperature = 0;
+  float humidity = 0;
   int err = SimpleDHTErrSuccess;
-  if ((err = dht11.read(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
-    Serial.print("Read DHT11 failed, err="); Serial.println(err);delay(1000);
+  if ((err = dht22.read2(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
+    Serial.print("Read DHT22 failed, err="); Serial.println(err);delay(2000);
     return;
   }
   
   Serial.print("Sample OK: ");
-  Serial.print((int)temperature); Serial.print(" *C, "); 
-  Serial.print((int)humidity); Serial.println(" H");
+  Serial.print((float)temperature); Serial.print(" *C, ");
+  Serial.print((float)humidity); Serial.println(" RH%");
   
-  // DHT11 sampling rate is 1HZ.
-  delay(1500);
+  // DHT22 sampling rate is 0.5HZ.
+  delay(2500);
   int k;
   uint8_t data[] = { 0xff, 0xff, 0xff, 0xff };
   uint8_t blank[] = { 0x00, 0x00, 0x00, 0x00 };
   display.setBrightness(0x0f);
-display.showNumberDec((int)temperature, false); // Expect: _301
+  display.showNumberDecEx((int)humidity, 0, true, 2, 2);
+display.showNumberDecEx((int)temperature, 0x40, true, 2, 0);
+//display.showNumberDecEx((int)temperature, (int)humidity, false); // Expect: _301
   // All segments on
   /*
   display.setSegments(data);
