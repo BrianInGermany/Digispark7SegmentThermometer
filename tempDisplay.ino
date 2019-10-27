@@ -52,7 +52,8 @@ void loop()
   int k;
   uint8_t data[] = { 0xff, 0xff, 0xff, 0xff };
   uint8_t blank[] = { 0x00, 0x00, 0x00, 0x00 };
-  display.setBrightness(0x0f);
+  //display.setBrightness(0x0f);
+  display.setBrightness(1);
   display.showNumberDecEx((int)humidity, 0, true, 2, 2);
 display.showNumberDecEx((int)temperature, 0x40, true, 2, 0);
 //display.showNumberDecEx((int)temperature, (int)humidity, false); // Expect: _301
